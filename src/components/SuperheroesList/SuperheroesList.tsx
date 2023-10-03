@@ -25,7 +25,6 @@ function SuperheroesList() {
 
   return (
     <div>
-      <h1>Superheroes</h1>
       <ul>
         {superheroes?.map((hero) => (
           <li key={hero.nickname}>
