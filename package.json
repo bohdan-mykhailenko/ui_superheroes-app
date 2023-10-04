@@ -16,12 +16,14 @@
     "@mui/material": "latest",
     "@reduxjs/toolkit": "latest",
     "axios": "latest",
+    "formik": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-query": "latest",
     "react-redux": "latest",
-    "sass": "latest"
+    "sass": "latest",
+    "yup": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",

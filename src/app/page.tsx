@@ -6,7 +6,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { palette } from '@/theme/palette';
 import { StoreProvider } from '@/redux/provider';
-import { DeleteModal } from '@/components/Modals/DeleteModal';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { IconButton } from '@mui/material';
+import { useTypedDispatch } from '@/redux/hooks';
+import { setIsAddModalOpen } from '@/redux/features/modals/modalsSlice';
+import { CreatePanel } from '@/components/CreatePanel/CreatePanel';
 
 interface pageProps {}
 
@@ -19,19 +23,16 @@ const Superheroes: React.FC<pageProps> = () => {
         alignItems: 'center',
         minHeight: '100vh',
         padding: '30px',
-        backgroundColor: palette.blue.main,
       }}
     >
-      <Typography variant="h1" color={palette.primary.main} marginBottom="20px">
+      <Typography variant="h1" color="primary" marginBottom="20px">
         Superheroes
-      </Typography>
-
-      <Typography variant="h4" color={palette.primary.main} marginBottom="20px">
-        Add new Superhero
       </Typography>
 
       <StoreProvider>
         <QueryProvider>
+          <CreatePanel />
+
           <SuperheroesList />
         </QueryProvider>
       </StoreProvider>

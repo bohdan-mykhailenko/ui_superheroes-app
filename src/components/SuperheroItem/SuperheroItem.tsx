@@ -12,11 +12,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
-import { useTypedDispatch, useTypedSelector } from '@/redux/hooks';
+import { useTypedDispatch } from '@/redux/hooks';
 import { setSelectedSuperhero } from '@/redux/features/superhero/superheroSlice';
-import { selectIsDeleteModalOpen } from '@/redux/selectors/modalsSelector';
-import { DeleteModal } from '../Modals/DeleteModal';
-import { setIsDeleteModalOpen } from '@/redux/features/modals/modalsSlice';
+import {
+  setIsDeleteModalOpen,
+  setIsEditModalOpen,
+} from '@/redux/features/modals/modalsSlice';
 
 interface SuperheroItemProps {
   superhero: Superhero;
@@ -36,9 +37,9 @@ export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
     dispatch(setIsDeleteModalOpen(true));
   };
 
-  const handleAddSuperhero = () => {
+  const handleEditSuperhero = () => {
     dispatch(setSelectedSuperhero(superhero));
-    dispatch(setIsAddModalOpen(true));
+    dispatch(setIsEditModalOpen(true));
   };
 
   return (
@@ -74,7 +75,7 @@ export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
       </Grid>
 
       <Grid item xs={12} sm={2} textAlign="right">
-        <IconButton onClick={handleAddSuperhero}>
+        <IconButton onClick={handleEditSuperhero}>
           <EditIcon color="info" />
         </IconButton>
         <IconButton onClick={handleDeleteSuperhero}>

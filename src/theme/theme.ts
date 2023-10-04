@@ -45,11 +45,28 @@ export const theme = createTheme({
   // },
 
   palette: {
-    info: {
-      main: '#777',
+    accent: {
+      main: '#FEE2C5',
     },
-    // warning: {
-    //   main: '#c32b2b',
-    // },
+    primary: {
+      main: '#000A10',
+      light: '#aaa',
+    },
+    secondary: {
+      main: '#F9F9F9',
+    },
+    blue: {
+      main: '#D8E1ED',
+    },
+    black: {
+      main: '#000A10',
+    },
+    gray: {
+      main: '#ACADAD',
+      dark: '#686868',
+    },
+    white: {
+      main: '#FAFDFE',
+    },
   },
 });
