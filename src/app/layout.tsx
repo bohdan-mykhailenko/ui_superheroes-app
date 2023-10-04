@@ -23,6 +23,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
+
       <body suppressHydrationWarning={true}>
         <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
       </body>
