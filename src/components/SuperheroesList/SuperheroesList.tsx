@@ -12,6 +12,9 @@ import { QueryProvider } from '@/providers/QueryProvider';
 import List from '@mui/material/List';
 import Grid from '@mui/material/Grid';
 import { palette } from '@/theme/palette';
+import { DeleteModal } from '../Modals/DeleteModal';
+import { useTypedSelector } from '@/redux/hooks';
+import { selectIsDeleteModalOpen } from '@/redux/selectors/modalsSelector';
 
 export const SuperheroesList = () => {
   const {
@@ -19,6 +22,8 @@ export const SuperheroesList = () => {
     isLoading,
     error,
   } = useQuery<Superhero[]>('superheroes', getAllSuperheroes);
+
+  const isDeleteModalOpen = useTypedSelector(selectIsDeleteModalOpen);
 
   if (isLoading) {
     return <Loader />;
@@ -36,6 +41,8 @@ export const SuperheroesList = () => {
         borderRadius: '10px',
       }}
     >
+      {isDeleteModalOpen && <DeleteModal />}
+
       <List>
         {superheroes?.map((superhero) => (
           <SuperheroItem key={superhero.id} superhero={superhero} />

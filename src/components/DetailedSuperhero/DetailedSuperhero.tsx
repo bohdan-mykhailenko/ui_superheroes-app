@@ -5,11 +5,11 @@ import React from 'react';
 interface DetailedSuperheroProps {}
 
 export const DetailedSuperhero: React.FC<DetailedSuperheroProps> = () => {
-  const superhero = useTypedSelector(selectSuperhero);
+  const selectedSuperhero = useTypedSelector(selectSuperhero);
 
   return (
     <div>
-      <h1>{superhero?.nickname}</h1>
+      <h1>{selectedSuperhero?.nickname}</h1>
     </div>
   );
 };

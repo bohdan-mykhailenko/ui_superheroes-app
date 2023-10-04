@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { palette } from '@/theme/palette';
 import { StoreProvider } from '@/redux/provider';
+import { DeleteModal } from '@/components/Modals/DeleteModal';
 
 interface pageProps {}
 
