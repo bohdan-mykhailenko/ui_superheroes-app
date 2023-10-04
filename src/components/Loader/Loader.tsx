@@ -3,10 +3,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useTheme from '@mui/material/styles/useTheme';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { palette } from '@/theme/palette';
 
 export const Loader: React.FC = () => {
-  const theme = useTheme();
-
   return (
     <Grid
       container
@@ -16,11 +15,11 @@ export const Loader: React.FC = () => {
     >
       <Typography
         variant="h4"
-        sx={{ color: theme.palette.gray.main, marginBottom: '20px' }}
+        sx={{ color: palette.gray.main, marginBottom: '20px' }}
       >
         Loading data...
       </Typography>
-      <CircularProgress sx={{ color: theme.palette.gray.main }} />
+      <CircularProgress sx={{ color: palette.gray.main }} />
     </Grid>
   );
 };

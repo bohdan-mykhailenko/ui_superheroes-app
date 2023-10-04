@@ -10,12 +10,13 @@ import { ErrorResponse } from '../ErrorResponse';
 import { Loader } from '../Loader';
 import { QueryProvider } from '@/providers/QueryProvider';
 import List from '@mui/material/List';
+import Grid from '@mui/material/Grid';
+import { palette } from '@/theme/palette';
 
 export const SuperheroesList = () => {
   const {
     data: superheroes,
     isLoading,
-    isError,
     error,
   } = useQuery<Superhero[]>('superheroes', getAllSuperheroes);
 
@@ -28,10 +29,19 @@ export const SuperheroesList = () => {
   }
 
   return (
-    <List>
-      {superheroes?.map((superhero) => (
-        <SuperheroItem key={superhero.id} superhero={superhero} />
-      ))}
-    </List>
+    <Grid
+      sx={{
+        padding: '50px',
+        width: '100%',
+        backgroundColor: palette.accent.main,
+        borderRadius: '10px',
+      }}
+    >
+      <List>
+        {superheroes?.map((superhero) => (
+          <SuperheroItem key={superhero.id} superhero={superhero} />
+        ))}
+      </List>
+    </Grid>
   );
 };
