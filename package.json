@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
+    "@hookform/resolvers": "^3.3.1",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@reduxjs/toolkit": "latest",
@@ -20,6 +21,7 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.47.0",
     "react-query": "latest",
     "react-redux": "latest",
     "sass": "latest",

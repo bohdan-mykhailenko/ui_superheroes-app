@@ -6,6 +6,8 @@ import { useTypedDispatch, useTypedSelector } from '@/redux/hooks';
 import { setIsDeleteModalOpen } from '@/redux/features/modals/modalsSlice';
 import { selectSuperhero } from '@/redux/selectors/superheroSelector';
 import { BasicModal } from '../BasicModal';
+import { deleteSuperhero } from '@/api/superheroes';
+import Button from '@mui/material/Button';
 
 export const DeleteModal = () => {
   const dispatch = useTypedDispatch();
@@ -13,6 +15,18 @@ export const DeleteModal = () => {
 
   const closeDeleteModal = () => {
     dispatch(setIsDeleteModalOpen(false));
+  };
+
+  const removeSuperhero = async () => {
+    try {
+      await deleteSuperhero(selectedSuperhero?.id || 0);
+
+      // Optionally, you can show a success message or redirect to another page
+      console.log('Data deletecsuccessfully!');
+    } catch (error) {
+      // Handle any errors that occur during the post request
+      console.error('Error posting data:', error);
+    }
   };
 
   return (
@@ -24,6 +38,8 @@ export const DeleteModal = () => {
         Are u sure u wanna delete
         <p>{selectedSuperhero?.nickname}</p>
       </Typography>
+
+      <Button onClick={removeSuperhero}>Yes</Button>
     </BasicModal>
   );
 };
