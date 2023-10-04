@@ -1,58 +1,46 @@
 'use client';
 
 import { getAllSuperheroes } from '@/api/superheroes';
-import { API_URL } from '@/consts/api-url';
 import { Superhero } from '@/types/Superhero';
-import { AxiosError } from 'axios';
 import React from 'react';
 import { useQuery } from 'react-query';
+import { SuperheroItem } from '../SuperheroItem';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '../ErrorResponse';
+import { Loader } from '../Loader';
+import { QueryProvider } from '@/providers/QueryProvider';
+import List from '@mui/material/List';
+import Grid from '@mui/material/Grid';
+import { palette } from '@/theme/palette';
 
-function SuperheroesList() {
+export const SuperheroesList = () => {
   const {
     data: superheroes,
     isLoading,
-    isError,
     error,
   } = useQuery<Superhero[]>('superheroes', getAllSuperheroes);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
-  if (isError) {
-    return <div>Error:</div>;
+  if (error) {
+    return <ErrorResponse error={error as AxiosError} />;
   }
 
   return (
-    <div>
-      <ul>
-        {superheroes?.map((hero) => (
-          <li key={hero.nickname}>
-            <h2>{hero.nickname}</h2>
-            <p>Real Name: {hero.real_name}</p>
-            <p>Origin: {hero.origin_description}</p>
-            <p>Superpowers: {hero.superpowers}</p>
-            <p>Catch Phrase: "{hero.catch_phrase}"</p>
-            <div>
-              Images:
-              <ul>
-                {hero.images.map((image, index) => (
-                  <li key={index}>
-                    <img
-                      width={40}
-                      height={40}
-                      src={`${API_URL}/images/superheroes/${image}`}
-                      alt={`Image ${index}`}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </li>
+    <Grid
+      sx={{
+        width: '100%',
+        // backgroundColor: palette.accent.main,
+        borderRadius: '10px',
+      }}
+    >
+      <List>
+        {superheroes?.map((superhero) => (
+          <SuperheroItem key={superhero.id} superhero={superhero} />
         ))}
-      </ul>
-    </div>
+      </List>
+    </Grid>
   );
-}
-
-export default SuperheroesList;
+};
