@@ -34,13 +34,22 @@ export const theme = createTheme({
     },
   },
 
-  breakpoints: {
-    values: {
-      xs: 450,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
+  // breakpoints: {
+  //   values: {
+  //     xs: 450,
+  //     sm: 600,
+  //     md: 900,
+  //     lg: 1200,
+  //     xl: 1536,
+  //   },
+  // },
+
+  palette: {
+    info: {
+      main: '#777',
     },
+    // warning: {
+    //   main: '#c32b2b',
+    // },
   },
 });

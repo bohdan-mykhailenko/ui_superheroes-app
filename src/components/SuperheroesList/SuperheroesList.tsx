@@ -31,9 +31,8 @@ export const SuperheroesList = () => {
   return (
     <Grid
       sx={{
-        padding: '50px',
         width: '100%',
-        backgroundColor: palette.accent.main,
+        // backgroundColor: palette.accent.main,
         borderRadius: '10px',
       }}
     >

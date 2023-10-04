@@ -26,36 +26,35 @@ export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
       container
       alignItems="center"
       sx={{
-        padding: '10px 20px',
+        padding: '10px',
         marginBottom: '10px',
-        width: '100%',
         backgroundColor: palette.white.main,
         borderRadius: '10px',
         justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
-      <Grid item xs={12} sm={3}>
+      <Grid item width="70px">
+        <Link href={`/${id}`}>
+          <Grid container alignItems="center">
+            <Image
+              width={70}
+              height={70}
+              src={imageUrl}
+              alt="Superhero Image"
+              style={{ objectFit: 'cover', borderRadius: '10px' }}
+            />
+          </Grid>
+        </Link>
+      </Grid>
+      <Grid item xs={10} sm={8} textAlign="left">
         <Link href={`/${id}`}>
           <Typography variant="h3">{nickname}</Typography>
         </Link>
       </Grid>
-      <Grid item xs={6} sm={6} textAlign="left">
-        <Link href={`/${id}`}>
-          <Image
-            width={70}
-            height={70}
-            src={imageUrl}
-            alt="Superhero Image"
-            style={{ objectFit: 'cover', borderRadius: '10px' }}
-          />
-        </Link>
-      </Grid>
-      <Grid item xs={3} sm={1} textAlign="right">
-        <IconButton
-          sx={{
-            marginRight: '10px',
-          }}
-        >
+
+      <Grid item xs={12} sm={2} textAlign="right">
+        <IconButton>
           <EditIcon color="info" />
         </IconButton>
         <IconButton>
