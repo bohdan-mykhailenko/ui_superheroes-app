@@ -1,6 +1,6 @@
-import SuperheroesList from '@/components/SuperheroesList/SuperheroesList';
 import Link from 'next/link';
 import React from 'react';
+import { SuperheroesList } from '@/components/SuperheroesList';
 
 interface pageProps {}
 
