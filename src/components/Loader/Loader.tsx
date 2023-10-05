@@ -3,7 +3,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useTheme from '@mui/material/styles/useTheme';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { palette } from '@/theme/palette';
 
 interface LoaderProps {
   message?: string;

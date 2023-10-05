@@ -15,7 +15,7 @@ export const theme = createTheme({
     fontWeightBold: 700,
 
     h1: {
-      fontSize: '48px',
+      fontSize: '34px',
       fontWeight: 700,
       lineHeight: '150%',
     },
@@ -26,12 +26,12 @@ export const theme = createTheme({
       textAlign: 'center',
     },
     h3: {
-      fontSize: '22px',
+      fontSize: '20px',
       fontWeight: 700,
       lineHeight: '150%',
     },
     h4: {
-      fontSize: '18px',
+      fontSize: '16px',
       fontWeight: 700,
       lineHeight: '150%',
     },
@@ -39,7 +39,6 @@ export const theme = createTheme({
       margin: '2px 0',
       fontSize: '12px',
       fontWeight: 700,
-      lineHeight: '150%',
       whiteSpace: 'pre-line',
     },
     body2: {
@@ -50,16 +49,6 @@ export const theme = createTheme({
       whiteSpace: 'pre-line',
     },
   },
-
-  // breakpoints: {
-  //   values: {
-  //     xs: 450,
-  //     sm: 600,
-  //     md: 900,
-  //     lg: 1200,
-  //     xl: 1536,
-  //   },
-  // },
 
   palette: {
     accent: {

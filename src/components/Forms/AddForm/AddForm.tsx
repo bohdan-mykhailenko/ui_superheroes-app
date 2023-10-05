@@ -10,15 +10,14 @@ import { Loader } from '@/components/Loader';
 import { ErrorResponse } from '@/components/ErrorResponse';
 import useTheme from '@mui/material/styles/useTheme';
 import { AxiosError } from 'axios';
-import {
-  addSuperhero,
-  setIsTotalSuperheroesChanged,
-} from '@/redux/features/superhero/superheroSlice';
+import { setIsTotalSuperheroesChanged } from '@/redux/features/superhero/superheroSlice';
+import { isWhitespace } from '@/helpers/isWhitespace';
 
 export const AddForm: React.FC = () => {
   const theme = useTheme();
   const queryClient = useQueryClient();
   const dispatch = useTypedDispatch();
+
   const {
     handleSubmit,
     control,
@@ -28,7 +27,7 @@ export const AddForm: React.FC = () => {
   const mutation = useMutation(
     (data: Omit<Superhero, 'id'>) => postSuperhero(data),
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries('add superhero');
         dispatch(setIsAddModalOpen(false));
         dispatch(setIsTotalSuperheroesChanged(true));
@@ -53,7 +52,11 @@ export const AddForm: React.FC = () => {
             name="nickname"
             control={control}
             defaultValue=""
-            rules={{ required: 'Nickname is required' }}
+            rules={{
+              required: 'Nickname is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Nickname cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.nickname} />
             )}
@@ -71,7 +74,11 @@ export const AddForm: React.FC = () => {
             name="real_name"
             control={control}
             defaultValue=""
-            rules={{ required: 'Real Name is required' }}
+            rules={{
+              required: 'Real Name is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Real Name cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.real_name} />
             )}
@@ -89,7 +96,11 @@ export const AddForm: React.FC = () => {
             name="origin_description"
             control={control}
             defaultValue=""
-            rules={{ required: 'Origin Description is required' }}
+            rules={{
+              required: 'Origin Description is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Origin Description cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.origin_description} />
             )}
@@ -107,7 +118,11 @@ export const AddForm: React.FC = () => {
             name="superpowers"
             control={control}
             defaultValue=""
-            rules={{ required: 'Superpowers are required' }}
+            rules={{
+              required: 'Superpowers are required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Superpowers cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.superpowers} />
             )}
@@ -125,7 +140,11 @@ export const AddForm: React.FC = () => {
             name="catch_phrase"
             control={control}
             defaultValue=""
-            rules={{ required: 'Catch Phrase is required' }}
+            rules={{
+              required: 'Catch Phrase is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Catch Phrase cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.catch_phrase} />
             )}
@@ -137,7 +156,7 @@ export const AddForm: React.FC = () => {
           )}
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12} marginBottom="20px">
           <InputLabel>Images:</InputLabel>
           <Controller
             name="images"
@@ -162,7 +181,7 @@ export const AddForm: React.FC = () => {
           )}
         </Grid>
 
-        <Grid item xs={3} margin="20px auto 0 auto">
+        <Grid item xs={3} margin="0 auto">
           <Button type="submit" variant="contained" color="success" fullWidth>
             <Grid container alignItems="center" justifyContent="center">
               {mutation.isLoading ? (

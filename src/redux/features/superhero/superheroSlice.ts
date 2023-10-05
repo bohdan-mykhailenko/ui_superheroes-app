@@ -46,6 +46,7 @@ const superheroSlice = createSlice({
         state.superheroes[index] = action.payload;
       }
     },
+
     setTotalSuperheroes: (state, action: PayloadAction<number>) => {
       state.totalSuperheroes = action.payload;
     },

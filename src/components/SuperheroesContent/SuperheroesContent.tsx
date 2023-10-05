@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import Pagination from '@mui/material/Pagination';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { getAllSuperheroes } from '@/api/superheroes';
-import { SuperheroItem } from '../SuperheroItem';
 import { AxiosError } from 'axios';
 import { ErrorResponse } from '../ErrorResponse';
 import { Loader } from '../Loader';
@@ -28,7 +27,7 @@ import {
   selectIsDeleteModalOpen,
   selectIsEditModalOpen,
 } from '@/redux/selectors/modalsSelector';
-import { List } from '@mui/material';
+import { SuperheroesList } from '../SuperheroesList';
 
 export const SuperheroesContent = () => {
   const dispatch = useDispatch();
@@ -41,7 +40,9 @@ export const SuperheroesContent = () => {
   const isEditModalOpen = useSelector(selectIsEditModalOpen);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, error } = useQuery(
+  const currentSuperheroesCount = superheroes?.length || 0;
+
+  const { isLoading, error } = useQuery(
     ['superheroes', currentPage, isTotalSuperheroesChanged],
     () => getAllSuperheroes(currentPage),
     {
@@ -65,32 +66,32 @@ export const SuperheroesContent = () => {
     return <ErrorResponse error={error as AxiosError} />;
   }
 
-  if (superheroes.length === 0 && currentPage > 1) {
+  if (currentSuperheroesCount === 0 && currentPage > 1) {
     setCurrentPage((current) => current - 1);
   }
 
   return (
-    <Grid width="100%">
+    <Grid display="grid" justifyContent="center" alignItems="center">
       {isEditModalOpen && <EditModal />}
       {isDeleteModalOpen && <DeleteModal />}
 
-      {superheroes.length === 0 ? (
-        <Typography>Empty list...</Typography>
-      ) : (
-        <List>
-          {superheroes.map((superhero) => (
-            <SuperheroItem key={superhero.id} superhero={superhero} />
-          ))}
-        </List>
-      )}
+      <Grid item xs={12} minHeight="550px">
+        {currentSuperheroesCount === 0 ? (
+          <Typography variant="h4">Empty list...</Typography>
+        ) : (
+          <SuperheroesList superheroes={superheroes} />
+        )}
+      </Grid>
 
-      <Pagination
-        count={Math.ceil(totalSuperheroes / 5)}
-        variant="outlined"
-        shape="rounded"
-        page={currentPage}
-        onChange={(event, page) => handlePageChange(page)}
-      />
+      <Grid item xs={12} margin="0 auto">
+        <Pagination
+          count={Math.ceil(totalSuperheroes / 5)}
+          variant="outlined"
+          shape="rounded"
+          page={currentPage}
+          onChange={(event, page) => handlePageChange(page)}
+        />
+      </Grid>
     </Grid>
   );
 };
