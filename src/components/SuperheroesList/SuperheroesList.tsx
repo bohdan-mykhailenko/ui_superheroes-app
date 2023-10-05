@@ -14,7 +14,11 @@ import Grid from '@mui/material/Grid';
 import { palette } from '@/theme/palette';
 import { DeleteModal } from '../Modals/DeleteModal';
 import { useTypedSelector } from '@/redux/hooks';
-import { selectIsDeleteModalOpen } from '@/redux/selectors/modalsSelector';
+import {
+  selectIsDeleteModalOpen,
+  selectIsEditModalOpen,
+} from '@/redux/selectors/modalsSelector';
+import { EditModal } from '../Modals/EditModal';
 
 export const SuperheroesList = () => {
   const {
@@ -24,6 +28,7 @@ export const SuperheroesList = () => {
   } = useQuery<Superhero[]>('superheroes', getAllSuperheroes);
 
   const isDeleteModalOpen = useTypedSelector(selectIsDeleteModalOpen);
+  const isEditModalOpen = useTypedSelector(selectIsEditModalOpen);
 
   if (isLoading) {
     return <Loader message="Loading data..." />;
@@ -37,10 +42,10 @@ export const SuperheroesList = () => {
     <Grid
       sx={{
         width: '100%',
-        // backgroundColor: palette.accent.main,
         borderRadius: '10px',
       }}
     >
+      {isEditModalOpen && <EditModal />}
       {isDeleteModalOpen && <DeleteModal />}
 
       <List>

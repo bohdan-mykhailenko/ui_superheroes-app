@@ -1,45 +1,73 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, InputLabel, Grid, Typography } from '@mui/material';
-import { postSuperhero } from '@/api/superheroes';
-import { Superhero } from '@/types/Superhero';
 import { useMutation, useQueryClient } from 'react-query';
-import { useTypedDispatch } from '@/redux/hooks';
-import { setIsAddModalOpen } from '@/redux/features/modals/modalsSlice';
+import { useTypedDispatch, useTypedSelector } from '@/redux/hooks';
+import { updateSuperhero } from '@/api/superheroes';
 import { Loader } from '@/components/Loader';
 import { ErrorResponse } from '@/components/ErrorResponse';
 import useTheme from '@mui/material/styles/useTheme';
 import { AxiosError } from 'axios';
+import { selectSuperhero } from '@/redux/selectors/superheroSelector';
+import { Superhero } from '@/types/Superhero';
+import { setIsEditModalOpen } from '@/redux/features/modals/modalsSlice';
+import { isSuperheroUpdated } from '@/helpers/isSuperheroUpdated';
 
-export const AddForm: React.FC = () => {
+export const EditForm: React.FC = () => {
   const theme = useTheme();
   const queryClient = useQueryClient();
   const dispatch = useTypedDispatch();
+  const selectedSuperhero = useTypedSelector(selectSuperhero);
+
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Omit<Superhero, 'id'>>({});
+    setValue,
+  } = useForm<Omit<Superhero, 'id'>>();
+
+  useEffect(() => {
+    if (selectedSuperhero) {
+      setValue('nickname', selectedSuperhero.nickname || '');
+      setValue('real_name', selectedSuperhero.real_name || '');
+      setValue(
+        'origin_description',
+        selectedSuperhero.origin_description || '',
+      );
+      setValue('superpowers', selectedSuperhero.superpowers || '');
+      setValue('catch_phrase', selectedSuperhero.catch_phrase || '');
+    }
+  }, [selectedSuperhero, setValue]);
 
   const mutation = useMutation(
-    (data: Omit<Superhero, 'id'>) => postSuperhero(data),
+    (data: Omit<Superhero, 'id'>) =>
+      updateSuperhero(selectedSuperhero?.id || 0, data),
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries('add superhero');
         console.log(data);
-        dispatch(setIsAddModalOpen(false));
+        dispatch(setIsEditModalOpen(false));
       },
     },
   );
 
   const onSubmit = async (data: Omit<Superhero, 'id'>) => {
-    mutation.mutateAsync(data);
+    const hasChanged = !isSuperheroUpdated(data, selectedSuperhero || {});
+
+    if (hasChanged) {
+      try {
+        mutation.mutate(data);
+      } catch (error) {
+        console.error('Error updating superhero:', error);
+      }
+    } else {
+      return;
+    }
   };
 
   if (mutation.isError) {
     return <ErrorResponse error={mutation.error as AxiosError} />;
   }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container>
@@ -134,12 +162,13 @@ export const AddForm: React.FC = () => {
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <InputLabel>Images:</InputLabel>
+          <InputLabel>
+            Images:{selectedSuperhero?.images as string[]}
+          </InputLabel>
           <Controller
             name="images"
             control={control}
             defaultValue={null}
-            rules={{ required: 'Upload at least 1 image' }}
             render={({ field }) => (
               <input
                 multiple
@@ -151,11 +180,6 @@ export const AddForm: React.FC = () => {
               />
             )}
           />
-          {errors.images && (
-            <Typography variant="body2" color="error">
-              {errors.images.message}
-            </Typography>
-          )}
         </Grid>
 
         <Grid item xs={3} margin="20px auto 0 auto">

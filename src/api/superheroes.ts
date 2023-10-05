@@ -57,3 +57,52 @@ export async function postSuperhero(superheroData: Omit<Superhero, 'id'>) {
     throw new Error(`Failed to create new superhero: ${error.message}`);
   }
 }
+
+export async function updateSuperhero(
+  superheroId: number,
+  updatedSuperheroData: Omit<Partial<Superhero>, 'id'>,
+) {
+  try {
+    const formData = new FormData();
+
+    for (const key in updatedSuperheroData) {
+      if (key === 'images') {
+        if (
+          updatedSuperheroData.images &&
+          updatedSuperheroData.images.length > 0
+        ) {
+          for (let i = 0; i < updatedSuperheroData.images.length; i++) {
+            formData.append('images', updatedSuperheroData.images[i]);
+          }
+        }
+
+        continue;
+      }
+
+      const updatedValue =
+        updatedSuperheroData[key as keyof Omit<Superhero, 'id'>];
+
+      if (updatedValue) {
+        formData.append(key, updatedValue.toString());
+      }
+    }
+
+    const response = await axios.patch(
+      `${API_URL}/superheroes/${superheroId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return response.data;
+  } catch (error: any) {
+    throw new Error(`Failed to update superhero: ${error.message}`);
+  }
+}
