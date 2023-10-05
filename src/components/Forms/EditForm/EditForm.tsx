@@ -6,10 +6,9 @@ import {
   InputLabel,
   Grid,
   Typography,
-  Input,
   ListItem,
 } from '@mui/material';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { useTypedDispatch, useTypedSelector } from '@/redux/hooks';
 import { updateSuperhero } from '@/api/superheroes';
 import { Loader } from '@/components/Loader';
@@ -21,8 +20,7 @@ import { Superhero } from '@/types/Superhero';
 import { setIsEditModalOpen } from '@/redux/features/modals/modalsSlice';
 import { isSuperheroUpdated } from '@/helpers/isSuperheroUpdated';
 import { editSuperhero } from '@/redux/features/superhero/superheroSlice';
-import Image from 'next/image';
-import { API_URL } from '@/consts/api-url';
+import { isWhitespace } from '@/helpers/isWhitespace';
 
 export const EditForm: React.FC = () => {
   const theme = useTheme();
@@ -37,9 +35,6 @@ export const EditForm: React.FC = () => {
   } = useForm<Omit<Superhero, 'id'>>();
 
   const existedImages = selectedSuperhero?.images as string[];
-  const imgUrls = existedImages.map(
-    (image) => `${API_URL}/images/superheroes/${image}`,
-  );
 
   useEffect(() => {
     if (selectedSuperhero) {
@@ -70,11 +65,7 @@ export const EditForm: React.FC = () => {
       !isSuperheroUpdated(data, selectedSuperhero || {}) || data.images?.length;
 
     if (isDataChanged) {
-      try {
-        mutation.mutate(data);
-      } catch (error) {
-        console.error('Error updating superhero:', error);
-      }
+      mutation.mutate(data);
     } else {
       return;
     }
@@ -83,6 +74,7 @@ export const EditForm: React.FC = () => {
   if (mutation.isError) {
     return <ErrorResponse error={mutation.error as AxiosError} />;
   }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container>
@@ -92,7 +84,11 @@ export const EditForm: React.FC = () => {
             name="nickname"
             control={control}
             defaultValue=""
-            rules={{ required: 'Nickname is required' }}
+            rules={{
+              required: 'Nickname is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Nickname cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.nickname} />
             )}
@@ -110,7 +106,11 @@ export const EditForm: React.FC = () => {
             name="real_name"
             control={control}
             defaultValue=""
-            rules={{ required: 'Real Name is required' }}
+            rules={{
+              required: 'Real Name is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Real Name cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.real_name} />
             )}
@@ -128,7 +128,11 @@ export const EditForm: React.FC = () => {
             name="origin_description"
             control={control}
             defaultValue=""
-            rules={{ required: 'Origin Description is required' }}
+            rules={{
+              required: 'Origin Description is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Origin Description cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.origin_description} />
             )}
@@ -146,7 +150,11 @@ export const EditForm: React.FC = () => {
             name="superpowers"
             control={control}
             defaultValue=""
-            rules={{ required: 'Superpowers are required' }}
+            rules={{
+              required: 'Superpowers are required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Superpowers cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.superpowers} />
             )}
@@ -164,7 +172,11 @@ export const EditForm: React.FC = () => {
             name="catch_phrase"
             control={control}
             defaultValue=""
-            rules={{ required: 'Catch Phrase is required' }}
+            rules={{
+              required: 'Catch Phrase is required',
+              validate: (value) =>
+                !isWhitespace(value) || 'Catch Phrase cannot be empty',
+            }}
             render={({ field }) => (
               <TextField {...field} error={!!errors.catch_phrase} />
             )}
@@ -176,55 +188,41 @@ export const EditForm: React.FC = () => {
           )}
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <InputLabel>
-            Images:
-            {imgUrls.map((imageUrl) => (
-              <ListItem key={imageUrl}>
-                <Image
-                  src={imageUrl}
-                  width={15}
-                  height={15}
-                  alt="Demo Superhero Image"
-                />
-              </ListItem>
-            ))}
-          </InputLabel>
+        <Grid item xs={12} sm={12} marginBottom="20px">
+          <InputLabel>Images:</InputLabel>
           <Controller
             name="images"
             control={control}
             defaultValue={[]}
             render={({ field }) => (
-              <React.Fragment>
-                <Button
-                  variant="outlined"
-                  component="label"
-                  htmlFor="file-input"
-                >
-                  Select File
-                </Button>
-                <Input
-                  id="file-input"
-                  type="file"
-                  style={{ display: 'none' }}
-                  inputProps={{
-                    multiple: true,
-                    accept: '.jpg, .jpeg, .png, .gif, .jfif, .webp',
-                    onChange: (e) => {
-                      const inputElement = e.target as HTMLInputElement;
-
-                      if (inputElement.files && inputElement.files) {
-                        field.onChange(inputElement.files);
-                      }
-                    },
-                  }}
-                />
-              </React.Fragment>
+              <input
+                multiple
+                type="file"
+                accept=".jpg, .jpeg, .png, .gif, .jfif, .webp"
+                onChange={(event) => {
+                  field.onChange(event.target.files);
+                }}
+              />
             )}
           />
+          <InputLabel>
+            Existed images:
+            {existedImages.map((image) => (
+              <ListItem
+                key={image}
+                sx={{
+                  padding: 0,
+                  marginBottom: '3px',
+                  fontSize: '10px',
+                }}
+              >
+                {image}
+              </ListItem>
+            ))}
+          </InputLabel>
         </Grid>
 
-        <Grid item xs={3} margin="20px auto 0 auto">
+        <Grid item xs={6} margin="0 auto">
           <Button type="submit" variant="contained" color="success" fullWidth>
             <Grid container alignItems="center" justifyContent="center">
               {mutation.isLoading ? (

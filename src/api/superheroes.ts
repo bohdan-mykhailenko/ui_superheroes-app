@@ -2,14 +2,9 @@ import { API_URL } from '@/consts/api-url';
 import { Superhero } from '@/types/Superhero';
 import axios from 'axios';
 
-interface SuperheroesFromServer {
-  superheroes: Superhero[];
-  totalSuperheroes: number;
-}
-
 export async function getAllSuperheroes(
   page: number = 1,
-): Promise<SuperheroesFromServer> {
+): Promise<{ superheroes: Superhero[]; totalSuperheroes: number }> {
   try {
     const response = await axios.get(`${API_URL}/superheroes?page=${page}`);
 

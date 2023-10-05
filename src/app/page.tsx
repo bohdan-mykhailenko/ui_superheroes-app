@@ -1,21 +1,12 @@
-import Link from 'next/link';
 import React from 'react';
-import { SuperheroesList } from '@/components/SuperheroesList';
 import { QueryProvider } from '@/providers/QueryProvider';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { palette } from '@/theme/palette';
 import { StoreProvider } from '@/redux/provider';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { IconButton } from '@mui/material';
-import { useTypedDispatch } from '@/redux/hooks';
-import { setIsAddModalOpen } from '@/redux/features/modals/modalsSlice';
-import { CreatePanel } from '@/components/CreatePanel/CreatePanel';
 import { SuperheroesContent } from '@/components/SuperheroesContent';
+import { CreatePanel } from '@/components/CreatePanel';
 
-interface pageProps {}
-
-const Superheroes: React.FC<pageProps> = () => {
+const Superheroes: React.FC = () => {
   return (
     <Grid
       container

@@ -1,7 +1,8 @@
+import { ErrorResponse } from '@/components/ErrorResponse';
 import React from 'react';
 
 const NotFound: React.FC = () => {
-  return <div>Not Found 404</div>;
+  return <ErrorResponse stringMessage="Not Found Page 404" />;
 };
 
 export default NotFound;

@@ -32,8 +32,9 @@ export const BasicModal: React.FC<DeleteModalProps> = ({
       >
         <Box
           sx={{
-            padding: '15px',
-            width: 400,
+            padding: '20px',
+
+            width: '400px',
 
             position: 'absolute',
             top: '50%',
@@ -46,6 +47,10 @@ export const BasicModal: React.FC<DeleteModalProps> = ({
             border: `2px solid ${theme.palette.primary.main}`,
             boxShadow: 24,
             borderRadius: '5px',
+
+            [theme.breakpoints.down('sm')]: {
+              width: '80%',
+            },
           }}
         >
           {children}

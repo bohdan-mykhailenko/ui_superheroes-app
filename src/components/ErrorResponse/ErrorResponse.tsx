@@ -5,9 +5,13 @@ import React from 'react';
 
 interface ErrorResponseProps {
   error?: AxiosError;
+  stringMessage?: string;
 }
 
-export const ErrorResponse: React.FC<ErrorResponseProps> = ({ error }) => {
+export const ErrorResponse: React.FC<ErrorResponseProps> = ({
+  error,
+  stringMessage,
+}) => {
   return (
     <Grid>
       <Typography
@@ -21,7 +25,7 @@ export const ErrorResponse: React.FC<ErrorResponseProps> = ({ error }) => {
         Oops! Something went wrong!
       </Typography>
       <Typography variant="h4" color="primary" textAlign="center">
-        {error?.message}
+        {stringMessage ? stringMessage : error?.message}
       </Typography>
     </Grid>
   );

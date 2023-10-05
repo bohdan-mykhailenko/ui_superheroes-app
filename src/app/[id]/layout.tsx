@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Superman',
+  title: 'Detailed Page',
   description: 'Welcome to Next.js',
   keywords: ['Next', 'React'],
 };

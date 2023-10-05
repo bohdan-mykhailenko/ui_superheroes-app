@@ -11,10 +11,7 @@ import Button from '@mui/material/Button';
 import { useMutation } from 'react-query';
 import { ErrorResponse } from '@/components/ErrorResponse';
 import { AxiosError } from 'axios';
-import {
-  removeSuperhero,
-  setIsTotalSuperheroesChanged,
-} from '@/redux/features/superhero/superheroSlice';
+import { setIsTotalSuperheroesChanged } from '@/redux/features/superhero/superheroSlice';
 import { Loader } from '@/components/Loader';
 import { Grid } from '@mui/material';
 import useTheme from '@mui/material/styles/useTheme';
@@ -48,17 +45,18 @@ export const DeleteModal = () => {
 
   return (
     <BasicModal onClose={closeDeleteModal}>
+      <Typography variant="h4" textAlign="center">
+        Are you sure you wanna delete
+      </Typography>
       <Typography
-        variant="h4"
+        variant="h3"
         textAlign="center"
+        color="error"
         sx={{
           marginBottom: '20px',
         }}
       >
-        Are you sure you wanna delete
-        <Typography variant="h3" textAlign="center" color="error">
-          {nickname}
-        </Typography>
+        {nickname}
       </Typography>
 
       <Button
