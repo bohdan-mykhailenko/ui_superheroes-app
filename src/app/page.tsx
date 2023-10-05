@@ -6,7 +6,7 @@ import { StoreProvider } from '@/redux/provider';
 import { SuperheroesContent } from '@/components/SuperheroesContent';
 import { CreatePanel } from '@/components/CreatePanel';
 
-const Superheroes: React.FC = () => {
+const SuperheroesPage: React.FC = () => {
   return (
     <Grid
       container
@@ -32,4 +32,4 @@ const Superheroes: React.FC = () => {
   );
 };
 
-export default Superheroes;
+export default SuperheroesPage;
