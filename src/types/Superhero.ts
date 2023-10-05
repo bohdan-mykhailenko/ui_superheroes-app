@@ -5,5 +5,5 @@ export interface Superhero {
   origin_description: string;
   superpowers: string;
   catch_phrase: string;
-  images: string[] | FileList | null;
+  images: string[] | FileList;
 }
