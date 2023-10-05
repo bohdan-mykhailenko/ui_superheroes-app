@@ -25,7 +25,8 @@ interface SuperheroItemProps {
 
 export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
   const { id, nickname, images } = superhero;
-  const imageUrl = API_URL + '/images/superheroes/' + images[0];
+  const avatar = images[0];
+  const imageUrl = API_URL + '/images/superheroes/' + avatar;
   const dispatch = useTypedDispatch();
 
   const handleSelectSuperhero = () => {

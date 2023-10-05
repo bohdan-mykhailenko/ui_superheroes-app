@@ -193,7 +193,7 @@ export const EditForm: React.FC = () => {
           <Controller
             name="images"
             control={control}
-            defaultValue={null}
+            defaultValue={[]}
             render={({ field }) => (
               <React.Fragment>
                 <Button
