@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import useTheme from '@mui/material/styles/useTheme';
 
 interface DeleteModalProps {
   onClose: () => void;
@@ -13,6 +14,7 @@ export const BasicModal: React.FC<DeleteModalProps> = ({
   children,
   onClose,
 }) => {
+  const theme = useTheme();
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
@@ -30,7 +32,7 @@ export const BasicModal: React.FC<DeleteModalProps> = ({
       >
         <Box
           sx={{
-            padding: '4px',
+            padding: '15px',
             width: 400,
 
             position: 'absolute',
@@ -40,9 +42,10 @@ export const BasicModal: React.FC<DeleteModalProps> = ({
 
             transform: 'translate(-50%, -50%)',
 
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
+            backgroundColor: theme.palette.white.main,
+            border: `2px solid ${theme.palette.primary.main}`,
             boxShadow: 24,
+            borderRadius: '5px',
           }}
         >
           {children}

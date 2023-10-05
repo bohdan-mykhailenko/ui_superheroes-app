@@ -26,7 +26,7 @@ export const SuperheroesList = () => {
   const isDeleteModalOpen = useTypedSelector(selectIsDeleteModalOpen);
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader message="Loading data..." />;
   }
 
   if (error) {

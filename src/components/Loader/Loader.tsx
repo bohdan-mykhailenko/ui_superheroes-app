@@ -5,7 +5,19 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { palette } from '@/theme/palette';
 
-export const Loader: React.FC = () => {
+interface LoaderProps {
+  message?: string;
+  size?: number;
+  color?: string;
+}
+
+export const Loader: React.FC<LoaderProps> = ({
+  message,
+  size = 40,
+  color,
+}) => {
+  const theme = useTheme();
+
   return (
     <Grid
       container
@@ -13,13 +25,15 @@ export const Loader: React.FC = () => {
       justifyContent="center"
       direction="column"
     >
-      <Typography
-        variant="h4"
-        sx={{ color: palette.gray.main, marginBottom: '20px' }}
-      >
-        Loading data...
-      </Typography>
-      <CircularProgress sx={{ color: palette.gray.main }} />
+      {message && (
+        <Typography variant="h4" color="primary" sx={{ marginBottom: '20px' }}>
+          {message}
+        </Typography>
+      )}
+      <CircularProgress
+        size={size}
+        sx={{ color: color ? color : theme.palette.primary.main }}
+      />
     </Grid>
   );
 };

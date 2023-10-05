@@ -11,9 +11,8 @@ export async function getAllSuperheroes(): Promise<Superhero[]> {
     }
 
     return response.data;
-  } catch (error) {
-    console.error('Error fetching superheroes:', error);
-    throw error;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch superheroes: ${error.message}`);
   }
 }
 
@@ -31,14 +30,12 @@ export async function postSuperhero(superheroData: Omit<Superhero, 'id'>) {
   try {
     const formData = new FormData();
 
-    // Append text data
     formData.append('nickname', superheroData.nickname);
     formData.append('real_name', superheroData.real_name);
     formData.append('origin_description', superheroData.origin_description);
     formData.append('superpowers', superheroData.superpowers);
     formData.append('catch_phrase', superheroData.catch_phrase);
 
-    // Append image files
     if (superheroData.images && superheroData.images.length > 0) {
       for (let i = 0; i < superheroData.images.length; i++) {
         formData.append('images', superheroData.images[i]);
@@ -56,8 +53,7 @@ export async function postSuperhero(superheroData: Omit<Superhero, 'id'>) {
     }
 
     return response.data;
-  } catch (error) {
-    console.error('Error posting superhero:', error);
-    throw error;
+  } catch (error: any) {
+    throw new Error(`Failed to create new superhero: ${error.message}`);
   }
 }
