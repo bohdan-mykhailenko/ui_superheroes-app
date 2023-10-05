@@ -3,7 +3,7 @@
 #  Superheroes Application
 
 ## Overview
-* [**Demo Link**](https://superheroes-delta.vercel.app/superheroes)
+* [**Demo Link**](https://superheroes-bg7cj9zf0-alfabravo228.vercel.app/)
 * [**Backend Repo**](https://github.com/bohdan-mykhailenko/superheroes_API)
 
 ## Description
