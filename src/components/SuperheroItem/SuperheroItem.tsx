@@ -12,6 +12,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
+import { useTypedDispatch } from '@/redux/hooks';
+import { setSelectedSuperhero } from '@/redux/features/superhero/superheroSlice';
+import {
+  setIsDeleteModalOpen,
+  setIsEditModalOpen,
+} from '@/redux/features/modals/modalsSlice';
 
 interface SuperheroItemProps {
   superhero: Superhero;
@@ -20,6 +26,21 @@ interface SuperheroItemProps {
 export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
   const { id, nickname, images } = superhero;
   const imageUrl = API_URL + '/images/superheroes/' + images[0];
+  const dispatch = useTypedDispatch();
+
+  const handleSelectSuperhero = () => {
+    dispatch(setSelectedSuperhero(superhero));
+  };
+
+  const handleDeleteSuperhero = () => {
+    dispatch(setSelectedSuperhero(superhero));
+    dispatch(setIsDeleteModalOpen(true));
+  };
+
+  const handleEditSuperhero = () => {
+    dispatch(setSelectedSuperhero(superhero));
+    dispatch(setIsEditModalOpen(true));
+  };
 
   return (
     <Grid
@@ -35,7 +56,7 @@ export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
       }}
     >
       <Grid item width="70px">
-        <Link href={`/${id}`}>
+        <Link href={`/${id}`} onClick={handleSelectSuperhero}>
           <Grid container alignItems="center">
             <Image
               width={70}
@@ -48,16 +69,16 @@ export const SuperheroItem: React.FC<SuperheroItemProps> = ({ superhero }) => {
         </Link>
       </Grid>
       <Grid item xs={10} sm={8} textAlign="left">
-        <Link href={`/${id}`}>
+        <Link href={`/${id}`} onClick={handleSelectSuperhero}>
           <Typography variant="h3">{nickname}</Typography>
         </Link>
       </Grid>
 
       <Grid item xs={12} sm={2} textAlign="right">
-        <IconButton>
+        <IconButton onClick={handleEditSuperhero}>
           <EditIcon color="info" />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={handleDeleteSuperhero}>
           <DeleteForeverIcon color="error" />
         </IconButton>
       </Grid>

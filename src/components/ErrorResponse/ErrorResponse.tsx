@@ -5,28 +5,23 @@ import React from 'react';
 
 interface ErrorResponseProps {
   error?: AxiosError;
-  errorFromOpenAI?: string;
 }
 
-export const ErrorResponse: React.FC<ErrorResponseProps> = ({
-  error,
-  errorFromOpenAI,
-}) => {
+export const ErrorResponse: React.FC<ErrorResponseProps> = ({ error }) => {
   return (
     <Grid>
       <Typography
-        variant="h2"
+        variant="h3"
         color="error"
+        textAlign="center"
         sx={{
           marginBottom: '20px',
         }}
       >
-        {errorFromOpenAI
-          ? 'Error with Open Ai'
-          : 'Error occured when fetching data'}
+        Oops! Something went wrong!
       </Typography>
-      <Typography variant="h4" color="error">
-        {errorFromOpenAI ? errorFromOpenAI : error?.message}
+      <Typography variant="h4" color="primary" textAlign="center">
+        {error?.message}
       </Typography>
     </Grid>
   );

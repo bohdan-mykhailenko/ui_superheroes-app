@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
 import { ThemeRegistry } from './ThemeRegistry';
 import '../styles/main.scss';
+import '../styles/global.css';
 
 export const metadata: Metadata = {
   title: 'Superheroes',
   description: 'Welcome to Next.js',
   keywords: ['Next', 'React'],
+};
+
+const bodyStyles = {
+  backgroundColor: 'var(--blue-main)',
 };
 
 export default function RootLayout({
@@ -23,7 +28,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning={true}>
+
+      <body suppressHydrationWarning={true} style={bodyStyles}>
         <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
       </body>
     </html>
