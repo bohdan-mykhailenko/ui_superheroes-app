@@ -13,22 +13,34 @@ import List from '@mui/material/List';
 import Grid from '@mui/material/Grid';
 import { palette } from '@/theme/palette';
 import { DeleteModal } from '../Modals/DeleteModal';
-import { useTypedSelector } from '@/redux/hooks';
+import { useTypedDispatch, useTypedSelector } from '@/redux/hooks';
 import {
   selectIsDeleteModalOpen,
   selectIsEditModalOpen,
 } from '@/redux/selectors/modalsSelector';
 import { EditModal } from '../Modals/EditModal';
+import { setSuperheroes } from '@/redux/features/superhero/superheroSlice';
+import { selectSuperheroes } from '@/redux/selectors/superheroSelector';
+import { Typography } from '@mui/material';
 
 export const SuperheroesList = () => {
-  const {
-    data: superheroes,
-    isLoading,
-    error,
-  } = useQuery<Superhero[]>('superheroes', getAllSuperheroes);
+  const dispatch = useTypedDispatch();
 
+  const { isLoading, error } = useQuery<Superhero[]>(
+    'superheroes',
+    getAllSuperheroes,
+    {
+      onSuccess: (data) => {
+        dispatch(setSuperheroes(data));
+      },
+      staleTime: Infinity,
+    },
+  );
+
+  const superheroes = useTypedSelector(selectSuperheroes);
   const isDeleteModalOpen = useTypedSelector(selectIsDeleteModalOpen);
   const isEditModalOpen = useTypedSelector(selectIsEditModalOpen);
+  const isListEmpty = superheroes.length === 0;
 
   if (isLoading) {
     return <Loader message="Loading data..." />;
@@ -39,20 +51,19 @@ export const SuperheroesList = () => {
   }
 
   return (
-    <Grid
-      sx={{
-        width: '100%',
-        borderRadius: '10px',
-      }}
-    >
+    <Grid width="100%">
       {isEditModalOpen && <EditModal />}
       {isDeleteModalOpen && <DeleteModal />}
 
-      <List>
-        {superheroes?.map((superhero) => (
-          <SuperheroItem key={superhero.id} superhero={superhero} />
-        ))}
-      </List>
+      {isListEmpty ? (
+        <Typography>Empty list...</Typography>
+      ) : (
+        <List>
+          {superheroes.map((superhero) => (
+            <SuperheroItem key={superhero.id} superhero={superhero} />
+          ))}
+        </List>
+      )}
     </Grid>
   );
 };

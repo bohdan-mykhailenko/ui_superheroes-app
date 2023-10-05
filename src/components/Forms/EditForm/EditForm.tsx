@@ -1,6 +1,14 @@
 import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, InputLabel, Grid, Typography } from '@mui/material';
+import {
+  TextField,
+  Button,
+  InputLabel,
+  Grid,
+  Typography,
+  Input,
+  ListItem,
+} from '@mui/material';
 import { useMutation, useQueryClient } from 'react-query';
 import { useTypedDispatch, useTypedSelector } from '@/redux/hooks';
 import { updateSuperhero } from '@/api/superheroes';
@@ -12,10 +20,12 @@ import { selectSuperhero } from '@/redux/selectors/superheroSelector';
 import { Superhero } from '@/types/Superhero';
 import { setIsEditModalOpen } from '@/redux/features/modals/modalsSlice';
 import { isSuperheroUpdated } from '@/helpers/isSuperheroUpdated';
+import { editSuperhero } from '@/redux/features/superhero/superheroSlice';
+import Image from 'next/image';
+import { API_URL } from '@/consts/api-url';
 
 export const EditForm: React.FC = () => {
   const theme = useTheme();
-  const queryClient = useQueryClient();
   const dispatch = useTypedDispatch();
   const selectedSuperhero = useTypedSelector(selectSuperhero);
 
@@ -25,6 +35,11 @@ export const EditForm: React.FC = () => {
     formState: { errors },
     setValue,
   } = useForm<Omit<Superhero, 'id'>>();
+
+  const existedImages = selectedSuperhero?.images as string[];
+  const imgUrls = existedImages.map(
+    (image) => `${API_URL}/images/superheroes/${image}`,
+  );
 
   useEffect(() => {
     if (selectedSuperhero) {
@@ -44,17 +59,17 @@ export const EditForm: React.FC = () => {
       updateSuperhero(selectedSuperhero?.id || 0, data),
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries('add superhero');
-        console.log(data);
         dispatch(setIsEditModalOpen(false));
+        dispatch(editSuperhero(data));
       },
     },
   );
 
   const onSubmit = async (data: Omit<Superhero, 'id'>) => {
-    const hasChanged = !isSuperheroUpdated(data, selectedSuperhero || {});
+    const isDataChanged =
+      !isSuperheroUpdated(data, selectedSuperhero || {}) || data.images?.length;
 
-    if (hasChanged) {
+    if (isDataChanged) {
       try {
         mutation.mutate(data);
       } catch (error) {
@@ -163,21 +178,48 @@ export const EditForm: React.FC = () => {
 
         <Grid item xs={12} sm={6}>
           <InputLabel>
-            Images:{selectedSuperhero?.images as string[]}
+            Images:
+            {imgUrls.map((imageUrl) => (
+              <ListItem key={imageUrl}>
+                <Image
+                  src={imageUrl}
+                  width={15}
+                  height={15}
+                  alt="Demo Superhero Image"
+                />
+              </ListItem>
+            ))}
           </InputLabel>
           <Controller
             name="images"
             control={control}
             defaultValue={null}
             render={({ field }) => (
-              <input
-                multiple
-                type="file"
-                accept=".jpg, .jpeg, .png, .gif, .jfif, .webp"
-                onChange={(event) => {
-                  field.onChange(event.target.files);
-                }}
-              />
+              <React.Fragment>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  htmlFor="file-input"
+                >
+                  Select File
+                </Button>
+                <Input
+                  id="file-input"
+                  type="file"
+                  style={{ display: 'none' }}
+                  inputProps={{
+                    multiple: true,
+                    accept: '.jpg, .jpeg, .png, .gif, .jfif, .webp',
+                    onChange: (e) => {
+                      const inputElement = e.target as HTMLInputElement;
+
+                      if (inputElement.files && inputElement.files) {
+                        field.onChange(inputElement.files);
+                      }
+                    },
+                  }}
+                />
+              </React.Fragment>
             )}
           />
         </Grid>

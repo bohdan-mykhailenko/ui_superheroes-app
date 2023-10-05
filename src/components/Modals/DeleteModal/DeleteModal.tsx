@@ -8,38 +8,71 @@ import { selectSuperhero } from '@/redux/selectors/superheroSelector';
 import { BasicModal } from '../BasicModal';
 import { deleteSuperhero } from '@/api/superheroes';
 import Button from '@mui/material/Button';
+import { useMutation } from 'react-query';
+import { ErrorResponse } from '@/components/ErrorResponse';
+import { AxiosError } from 'axios';
+import { removeSuperhero } from '@/redux/features/superhero/superheroSlice';
+import { Loader } from '@/components/Loader';
+import { Grid } from '@mui/material';
+import useTheme from '@mui/material/styles/useTheme';
 
 export const DeleteModal = () => {
+  const theme = useTheme();
   const dispatch = useTypedDispatch();
-  const selectedSuperhero = useTypedSelector(selectSuperhero);
+  const { id = 0, nickname } = useTypedSelector(selectSuperhero) || {};
 
   const closeDeleteModal = () => {
     dispatch(setIsDeleteModalOpen(false));
   };
 
-  const removeSuperhero = async () => {
-    try {
-      await deleteSuperhero(selectedSuperhero?.id || 0);
+  const mutation = useMutation(
+    (superheroId: number) => deleteSuperhero(superheroId),
+    {
+      onSuccess: () => {
+        dispatch(setIsDeleteModalOpen(false));
+        dispatch(removeSuperhero(id));
+      },
+    },
+  );
 
-      // Optionally, you can show a success message or redirect to another page
-      console.log('Data deletecsuccessfully!');
-    } catch (error) {
-      // Handle any errors that occur during the post request
-      console.error('Error posting data:', error);
-    }
+  const handleRemoveSuperhero = async () => {
+    mutation.mutateAsync(id);
   };
+
+  if (mutation.isError) {
+    return <ErrorResponse error={mutation.error as AxiosError} />;
+  }
 
   return (
     <BasicModal onClose={closeDeleteModal}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Delete modal
-      </Typography>
-      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        Are u sure u wanna delete
-        <p>{selectedSuperhero?.nickname}</p>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        sx={{
+          marginBottom: '20px',
+        }}
+      >
+        Are you sure you wanna delete
+        <Typography variant="h3" textAlign="center" color="error">
+          {nickname}
+        </Typography>
       </Typography>
 
-      <Button onClick={removeSuperhero}>Yes</Button>
+      <Button
+        onClick={handleRemoveSuperhero}
+        type="submit"
+        variant="contained"
+        color="success"
+        fullWidth
+      >
+        <Grid container alignItems="center" justifyContent="center">
+          {mutation.isLoading ? (
+            <Loader size={20} color={theme.palette.white.main} />
+          ) : (
+            'Delete'
+          )}{' '}
+        </Grid>
+      </Button>
     </BasicModal>
   );
 };

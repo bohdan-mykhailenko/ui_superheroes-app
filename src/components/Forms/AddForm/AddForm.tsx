@@ -10,10 +10,10 @@ import { Loader } from '@/components/Loader';
 import { ErrorResponse } from '@/components/ErrorResponse';
 import useTheme from '@mui/material/styles/useTheme';
 import { AxiosError } from 'axios';
+import { addSuperhero } from '@/redux/features/superhero/superheroSlice';
 
 export const AddForm: React.FC = () => {
   const theme = useTheme();
-  const queryClient = useQueryClient();
   const dispatch = useTypedDispatch();
   const {
     handleSubmit,
@@ -25,9 +25,8 @@ export const AddForm: React.FC = () => {
     (data: Omit<Superhero, 'id'>) => postSuperhero(data),
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries('add superhero');
-        console.log(data);
         dispatch(setIsAddModalOpen(false));
+        dispatch(addSuperhero(data));
       },
     },
   );
