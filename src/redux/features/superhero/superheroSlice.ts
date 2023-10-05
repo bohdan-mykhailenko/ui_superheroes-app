@@ -4,11 +4,15 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 interface superheroState {
   selectedSuperhero: Superhero | null;
   superheroes: Superhero[];
+  totalSuperheroes: number;
+  isTotalSuperheroesChanged: boolean;
 }
 
 const initialState: superheroState = {
   selectedSuperhero: null,
   superheroes: [],
+  totalSuperheroes: 0,
+  isTotalSuperheroesChanged: false,
 };
 
 const superheroSlice = createSlice({
@@ -42,6 +46,13 @@ const superheroSlice = createSlice({
         state.superheroes[index] = action.payload;
       }
     },
+    setTotalSuperheroes: (state, action: PayloadAction<number>) => {
+      state.totalSuperheroes = action.payload;
+    },
+
+    setIsTotalSuperheroesChanged: (state, action: PayloadAction<boolean>) => {
+      state.isTotalSuperheroesChanged = action.payload;
+    },
   },
 });
 
@@ -51,6 +62,8 @@ export const {
   addSuperhero,
   removeSuperhero,
   editSuperhero,
+  setTotalSuperheroes,
+  setIsTotalSuperheroesChanged,
 } = superheroSlice.actions;
 
 export default superheroSlice.reducer;
