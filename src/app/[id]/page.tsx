@@ -1,12 +1,11 @@
 'use client';
 
-import { Superhero } from '@/types/Superhero';
 import { DetailedSuperhero } from '@/components/DetailedSuperhero';
 import { StoreProvider } from '@/redux/provider';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
-function SuperheroDetailPage({ superhero }: { superhero: Superhero }) {
+function SuperheroDetailPage() {
   return (
     <Grid
       sx={{
