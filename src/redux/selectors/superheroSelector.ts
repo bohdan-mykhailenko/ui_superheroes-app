@@ -15,3 +15,19 @@ export const selectSuperheroes = createSelector(
   [superheroesSelector],
   (superheroes) => superheroes,
 );
+
+const totalSuperheroesSelector = (state: RootState) =>
+  state.superhero.totalSuperheroes;
+
+export const selectTotalSuperheroes = createSelector(
+  [totalSuperheroesSelector],
+  (totalSuperheroes) => totalSuperheroes,
+);
+
+const isTotalSuperheroesChangedSelector = (state: RootState) =>
+  state.superhero.isTotalSuperheroesChanged;
+
+export const selectIsTotalSuperheroesChanged = createSelector(
+  [isTotalSuperheroesChangedSelector],
+  (isTotalSuperheroesChange) => isTotalSuperheroesChange,
+);

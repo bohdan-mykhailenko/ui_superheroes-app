@@ -2,9 +2,16 @@ import { API_URL } from '@/consts/api-url';
 import { Superhero } from '@/types/Superhero';
 import axios from 'axios';
 
-export async function getAllSuperheroes(): Promise<Superhero[]> {
+interface SuperheroesFromServer {
+  superheroes: Superhero[];
+  totalSuperheroes: number;
+}
+
+export async function getAllSuperheroes(
+  page: number = 1,
+): Promise<SuperheroesFromServer> {
   try {
-    const response = await axios.get(`${API_URL}/superheroes`);
+    const response = await axios.get(`${API_URL}/superheroes?page=${page}`);
 
     if (response.status === 200) {
       return response.data;

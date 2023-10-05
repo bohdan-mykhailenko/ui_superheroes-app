@@ -11,6 +11,7 @@ import { IconButton } from '@mui/material';
 import { useTypedDispatch } from '@/redux/hooks';
 import { setIsAddModalOpen } from '@/redux/features/modals/modalsSlice';
 import { CreatePanel } from '@/components/CreatePanel/CreatePanel';
+import { SuperheroesContent } from '@/components/SuperheroesContent';
 
 interface pageProps {}
 
@@ -33,7 +34,7 @@ const Superheroes: React.FC<pageProps> = () => {
         <QueryProvider>
           <CreatePanel />
 
-          <SuperheroesList />
+          <SuperheroesContent />
         </QueryProvider>
       </StoreProvider>
     </Grid>

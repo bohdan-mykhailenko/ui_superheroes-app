@@ -11,7 +11,10 @@ import Button from '@mui/material/Button';
 import { useMutation } from 'react-query';
 import { ErrorResponse } from '@/components/ErrorResponse';
 import { AxiosError } from 'axios';
-import { removeSuperhero } from '@/redux/features/superhero/superheroSlice';
+import {
+  removeSuperhero,
+  setIsTotalSuperheroesChanged,
+} from '@/redux/features/superhero/superheroSlice';
 import { Loader } from '@/components/Loader';
 import { Grid } from '@mui/material';
 import useTheme from '@mui/material/styles/useTheme';
@@ -30,7 +33,7 @@ export const DeleteModal = () => {
     {
       onSuccess: () => {
         dispatch(setIsDeleteModalOpen(false));
-        dispatch(removeSuperhero(id));
+        dispatch(setIsTotalSuperheroesChanged(true));
       },
     },
   );
